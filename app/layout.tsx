@@ -5,7 +5,7 @@ import { author } from "@/lib/constants";
 import { ThemeProvider } from "./_components/themeProvider";
 
 const interVariable = localFont({
-  src: "./fonts/Inter/variable.ttf",
+  src: "./fonts/inter/variable.ttf",
   variable: "--font-inter-variable",
   weight: "100 900",
 });
