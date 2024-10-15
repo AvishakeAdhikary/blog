@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { author } from "@/lib/constants";
+import { ThemeProvider } from "./_components/themeProvider";
 
 const interVariable = localFont({
-  src: "./fonts/Inter/Inter-Italic-VariableFont_opsz,wght.ttf",
+  src: "./fonts/Inter/variable.ttf",
   variable: "--font-inter-variable",
   weight: "100 900",
 });
@@ -26,9 +27,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
+        suppressHydrationWarning={true}
         className={`${interVariable.variable} antialiased`}
       >
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -1,21 +1,20 @@
 import { 
     NavigationMenu, 
-    NavigationMenuContent, 
     NavigationMenuItem, 
     NavigationMenuLink, 
-    NavigationMenuList, 
-    NavigationMenuTrigger 
+    NavigationMenuList,
 } from "@/components/ui/navigation-menu";
-import Image from "next/image";
+import { ModeToggle } from "./modeToggle";
 
 export default function Navbar() {
     return (
-        <NavigationMenu className="p-4">
+        <NavigationMenu className="p-4 gap-2">
             <NavigationMenuList>
                 <NavigationMenuItem>
-                    <NavigationMenuLink>
-                        Blog
-                    </NavigationMenuLink>
+                    Blog
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                    <ModeToggle />
                 </NavigationMenuItem>
             </NavigationMenuList>
         </NavigationMenu>
