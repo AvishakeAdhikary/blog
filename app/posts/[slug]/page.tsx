@@ -26,3 +26,7 @@ export function generateMetadata({ params }: Params): Metadata {
       },
     };
 }
+
+export default function Post() {
+  return <div></div>
+}
