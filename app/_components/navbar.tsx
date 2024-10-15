@@ -1,7 +1,6 @@
 import { 
     NavigationMenu, 
-    NavigationMenuItem, 
-    NavigationMenuLink, 
+    NavigationMenuItem,
     NavigationMenuList,
 } from "@/components/ui/navigation-menu";
 import { ModeToggle } from "./modeToggle";
