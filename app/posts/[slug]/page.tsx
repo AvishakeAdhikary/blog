@@ -4,7 +4,7 @@ import { getAllPosts, getPostBySlug } from "@/lib/api";
 import markdownToHtml from "@/lib/markdownToHtml";
 
 export default async function Post({ params }: Params) {
-  const post = getPostBySlug(params.slug);
+  const post = await getPostBySlug(params.slug);
 
   if (!post) {
     return notFound();
@@ -13,7 +13,13 @@ export default async function Post({ params }: Params) {
   const content = await markdownToHtml(post.content || "");
 
   return (
-    <div></div>
+    <div className="container mx-auto mt-8">
+      <h1 className="text-3xl font-bold mb-4">{post.title}</h1>
+      {post.coverImage && (
+        <img src={post.coverImage} alt={post.title} className="mb-4" />
+      )}
+      <div className="post-content" dangerouslySetInnerHTML={{ __html: content }} />
+    </div>
   );
 }
 
@@ -36,13 +42,13 @@ export function generateMetadata({ params }: Params): Metadata {
     title,
     openGraph: {
       title,
-      images: [post.ogImage.url],
+      images: post.ogImage ? [post.ogImage.url] : [],
     },
   };
 }
 
 export async function generateStaticParams() {
-  const posts = getAllPosts();
+  const posts = await getAllPosts();
 
   return posts.map((post) => ({
     slug: post.slug,
