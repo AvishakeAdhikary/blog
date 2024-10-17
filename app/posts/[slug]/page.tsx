@@ -2,6 +2,8 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getAllPosts, getPostBySlug } from "@/lib/api";
 import markdownToHtml from "@/lib/markdownToHtml";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import Image from "next/image";
 
 export default async function Post({ params }: Params) {
   const post = await getPostBySlug(params.slug);
@@ -16,9 +18,12 @@ export default async function Post({ params }: Params) {
     <div className="container mx-auto mt-8">
       <h1 className="text-3xl font-bold mb-4">{post.title}</h1>
       {post.coverImage && (
-        <img src={post.coverImage} alt={post.title} className="mb-4" />
+        <AspectRatio ratio={16 / 9}>
+          {/* <img src={post.coverImage} alt={post.title} className="mb-4 rounded-md object-cover max-w-full" /> */}
+          <Image src={post.coverImage} alt={post.title} className="mb-8 rounded-md object-cover w-full h-auto" width={0} height={0} sizes="100vw"/>
+        </AspectRatio>
       )}
-      <div className="post-content" dangerouslySetInnerHTML={{ __html: content }} />
+      <div className="post-content mt-8" dangerouslySetInnerHTML={{ __html: content }} />
     </div>
   );
 }
