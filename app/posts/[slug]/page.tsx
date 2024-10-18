@@ -20,10 +20,9 @@ export default async function Post({ params }: Params) {
       {post.coverImage && (
         <AspectRatio ratio={16 / 9}>
           {/* <img src={post.coverImage} alt={post.title} className="mb-4 rounded-md object-cover max-w-full" /> */}
-          <Image src={post.coverImage} alt={post.title} className="mb-8 rounded-md w-full h-auto" width={0} height={0} sizes="100vw"/>
+          <Image src={`https://raw.githubusercontent.com/AvishakeAdhikary/blog/refs/heads/main/public`+post.coverImage} alt={post.title} className="mb-8 rounded-md w-full h-auto" width={0} height={0} sizes="100vw"/>
         </AspectRatio>
       )}
-      {process.cwd()}
       <div className="post-content mt-8" dangerouslySetInnerHTML={{ __html: content }} />
     </div>
   );
@@ -48,7 +47,7 @@ export function generateMetadata({ params }: Params): Metadata {
     title,
     openGraph: {
       title,
-      images: post.ogImage ? [post.ogImage.url] : [],
+      images: post.ogImage ? [`https://raw.githubusercontent.com/AvishakeAdhikary/blog/refs/heads/main/public`+post.ogImage.url] : [],
     },
   };
 }
