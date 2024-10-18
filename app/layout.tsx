@@ -37,6 +37,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
+          {process.cwd()}
         </ThemeProvider>
       </body>
     </html>
