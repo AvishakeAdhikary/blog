@@ -12,10 +12,10 @@ const interVariable = localFont({
 
 export const metadata: Metadata = {
   title: `${author}'s Blog`,
-  description: `This is the blog of ${author}, where he talks about tech and ai and personal life.`,
-  openGraph : {
+  description: `Join ${author}, a Machine Learning Engineer, as he shares insights on AI technology, data science, and personal growth. Explore engaging discussions on machine learning, practical tips, and reflections on life, blending professional expertise with personal experiences.`,
+  openGraph: {
     title: `${author}'s Blog`,
-    images: ["@/public/assets/images/avishakeadhikary.jpg"]
+    images: ["https://raw.githubusercontent.com/AvishakeAdhikary/blog/refs/heads/main/public/assets/images/ogcover.png"]
   }
 };
 
@@ -37,8 +37,8 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
-          {process.cwd()}
         </ThemeProvider>
+        {process.cwd()}
       </body>
     </html>
   );
