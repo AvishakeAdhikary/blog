@@ -23,6 +23,7 @@ export default async function Post({ params }: Params) {
           <Image src={post.coverImage} alt={post.title} className="mb-8 rounded-md object-cover w-full h-auto" width={0} height={0} sizes="100vw"/>
         </AspectRatio>
       )}
+      {process.cwd()}
       <div className="post-content mt-8" dangerouslySetInnerHTML={{ __html: content }} />
     </div>
   );

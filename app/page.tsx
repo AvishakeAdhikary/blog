@@ -26,6 +26,7 @@ export default async function Home() {
                   </AspectRatio>
                 )
               }
+              {process.cwd()}
               <p className="mt-8">{heroPost.excerpt}</p>
               <a href={`/posts/${heroPost.slug}`} className="text-blue-500">Read more</a>
             </Card>
