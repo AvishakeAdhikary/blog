@@ -22,11 +22,10 @@ export default async function Home() {
               {
                 heroPost.coverImage && (
                   <AspectRatio ratio={16 / 9}>
-                    <Image src={heroPost.coverImage} alt={heroPost.title} className="mb-8 rounded-md object-cover w-full h-auto" width={0} height={0} sizes="100vw"/>
+                    <Image src={`https://raw.githubusercontent.com/AvishakeAdhikary/blog/refs/heads/main/public`+heroPost.coverImage} alt={heroPost.title} className="mb-8 rounded-md object-cover w-full h-auto" width={0} height={0} sizes="100vw"/>
                   </AspectRatio>
                 )
               }
-              {process.cwd()}
               <p className="mt-8">{heroPost.excerpt}</p>
               <a href={`/posts/${heroPost.slug}`} className="text-blue-500">Read more</a>
             </Card>
@@ -40,7 +39,7 @@ export default async function Home() {
                 {
                   post.coverImage && (
                     <AspectRatio ratio={16 / 9}>
-                      <Image src={post.coverImage} alt={post.title} className="mb-8 rounded-md object-cover w-full h-auto" width={0} height={0} sizes="100vw"/>
+                      <Image src={`https://raw.githubusercontent.com/AvishakeAdhikary/blog/refs/heads/main/public`+post.coverImage} alt={post.title} className="mb-8 rounded-md object-cover w-full h-auto" width={0} height={0} sizes="100vw"/>
                     </AspectRatio>
                   )
                 }

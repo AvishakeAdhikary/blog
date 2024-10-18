@@ -38,7 +38,6 @@ export default function RootLayout({
         >
           {children}
         </ThemeProvider>
-        {process.cwd()}
       </body>
     </html>
   );
