@@ -5,6 +5,8 @@ import markdownToHtml from "@/lib/markdownToHtml";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import Image from "next/image";
 
+import './page.css'
+
 export default async function Post({ params }: Params) {
   const post = await getPostBySlug(params.slug);
 
