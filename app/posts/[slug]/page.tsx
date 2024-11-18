@@ -7,8 +7,7 @@ import Image from "next/image";
 
 import './page.css'
 
-export default async function Post(props: Params) {
-  const params = await props.params;
+export default async function Post({ params }: Params) {
   const post = await getPostBySlug(params.slug);
 
   if (!post) {
@@ -32,13 +31,12 @@ export default async function Post(props: Params) {
 }
 
 type Params = {
-  params: Promise<{
+  params: {
     slug: string;
-  }>;
+  };
 };
 
-export async function generateMetadata(props: Params): Promise<Metadata> {
-  const params = await props.params;
+export function generateMetadata({ params }: Params): Metadata {
   const post = getPostBySlug(params.slug);
 
   if (!post) {
