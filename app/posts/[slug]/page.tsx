@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getAllPosts, getPostBySlug } from "@/lib/api";
 import markdownToHtml from "@/lib/markdownToHtml";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { format } from 'date-fns';
 import Image from "next/image";
 
 import './page.css'
@@ -19,6 +20,7 @@ export default async function Post({ params }: Params) {
   return (
     <div className="container mx-auto mt-8">
       <h1 className="text-3xl font-bold mb-4">{post.title}</h1>
+      <div className="text-xl font-bold mb-4">{format(new Date(post.date), 'PPpp')}</div>
       {post.coverImage && (
         <AspectRatio ratio={16 / 9}>
           {/* <img src={post.coverImage} alt={post.title} className="mb-4 rounded-md object-cover max-w-full" /> */}

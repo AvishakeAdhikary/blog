@@ -9,6 +9,7 @@ import { unified } from "unified";
 
 // Manual Prism JS Module Load
 import "prismjs/prism.js";
+// import "prismjs/themes/prism-twilight.css";
 import "prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard.js";
 import "prismjs/plugins/show-language/prism-show-language.js";
 import "prismjs/plugins/line-numbers/prism-line-numbers.js";

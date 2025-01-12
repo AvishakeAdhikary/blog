@@ -3,6 +3,7 @@
 import * as React from "react"
 import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
+import "prismjs/prism.js";
 
 import { Button } from "@/components/ui/button"
 import {
@@ -13,7 +14,16 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 export function ModeToggle() {
-  const { setTheme } = useTheme()
+  const { setTheme, theme } = useTheme()
+
+  React.useEffect(() => {
+    // Conditionally load the correct Prism theme based on the current theme
+    if (theme === "dark") {
+      import("prismjs/themes/prism-twilight.css");
+    } else {
+      import("prismjs/themes/prism-dark.css");
+    }
+  }, [theme]);
 
   return (
     <DropdownMenu>
