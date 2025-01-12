@@ -1,4 +1,5 @@
 import { getAllPosts } from "@/lib/api";
+import { format } from 'date-fns';
 import Navbar from "./_components/navbar";
 import { Card } from "@/components/ui/card";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
@@ -27,7 +28,16 @@ export default async function Home() {
                 )
               }
               <p className="mt-8">{heroPost.excerpt}</p>
-              <a href={`/posts/${heroPost.slug}`} className="text-blue-500">Read more</a>
+              <div className="font-normal text-base mb-4 relative z-50">
+                  {
+                    format(new Date(heroPost.date), 'PPpp')
+                  }
+              </div>
+              <Link href={`/posts/${heroPost.slug}`}>
+                <button className="border px-4 py-1 rounded-lg border-gray-500">
+                  Read more
+                </button>
+              </Link>
             </Card>
           </Link>
         )}
@@ -44,6 +54,11 @@ export default async function Home() {
                   )
                 }
                 <p className="font-normal text-base text-slate-500 mt-8 mb-4 relative z-50">{post.excerpt}</p>
+                <div className="font-normal text-base text-slate-500 mb-4 relative z-50">
+                  {
+                    format(new Date(post.date), 'PPpp')
+                  }
+                </div>
                 <Link href={`/posts/${post.slug}`}>
                   <button className="border px-4 py-1 rounded-lg  border-gray-500 text-gray-300">
                     Explore
