@@ -1,36 +1,74 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# monolog
 
-## Getting Started
+A minimal, monospace-themed blog built with Next.js 15, React 19, TypeScript, and Tailwind CSS. Statically exported and ready for GitHub Pages.
 
-First, run the development server:
+## Stack
+
+- Next.js 15 (App Router, `output: 'export'`)
+- React 19
+- TypeScript
+- Tailwind CSS + `@tailwindcss/typography`
+- Markdown via `unified` / `remark` / `rehype` (GFM, math via KaTeX, syntax highlighting via `rehype-pretty-code` / Shiki)
+- JetBrains Mono via `next/font/google`
+- Giscus for comments (optional)
+- Pluggable DB adapter for likes/comments (local by default; Prisma/Supabase/Firebase/Mongo stubs included)
+
+## Quick Start
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# build static site
+npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+After build, the static site is in `out/`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Authoring Posts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Posts live in `content/posts/<slug>/index.md`. Frontmatter schema:
 
-## Learn More
+```yaml
+---
+title: "My Post"
+description: "A short description."
+date: "2026-01-10"
+updated: "2026-01-12"  # optional
+tags: ["typescript", "next"]
+draft: false           # optional
+cover: "./assets/cover.svg"  # optional, relative to post folder
+---
+```
 
-To learn more about Next.js, take a look at the following resources:
+Assets go inside `content/posts/<slug>/assets/`. They are copied to `public/posts/<slug>/assets/` at prebuild time.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Admin (dev only)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Run `npm run dev`, then visit `/admin`. It allows creating, editing, deleting posts, and uploading assets. In production builds, this page renders a "local only" stub; the underlying API routes return 404.
 
-## Deploy on Vercel
+## Theming
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+CSS custom properties drive the palette. Dark is the default. Light mode is toggled by setting `data-theme="light"` on `<html>`. The `ThemeToggle` persists choice to `localStorage`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deploy to GitHub Pages
+
+A workflow at `.github/workflows/deploy.yml` builds the site and publishes to Pages. It auto-derives `basePath` from the repo name. For the canonical site at `https://avishakeadhikary.github.io/blog`, the repo should be named `blog`.
+
+## Swapping DB Adapter
+
+Set `NEXT_PUBLIC_DB_ADAPTER` to one of: `local`, `prisma`, `supabase`, `firebase`, `mongo`. Only `local` is implemented out of the box; the others are scaffolded adapters that throw `NotImplementedError` until wired up.
+
+## Giscus
+
+Set the following env vars to enable comments:
+
+```
+NEXT_PUBLIC_GISCUS_REPO=owner/repo
+NEXT_PUBLIC_GISCUS_REPO_ID=...
+NEXT_PUBLIC_GISCUS_CATEGORY=General
+NEXT_PUBLIC_GISCUS_CATEGORY_ID=...
+```
+
+## License
+
+MIT — see `LICENSE`.

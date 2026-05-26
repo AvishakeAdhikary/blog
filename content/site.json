@@ -1,0 +1,19 @@
+{
+  "title": "monolog",
+  "description": "Research notes on machine learning, AI systems, and the mathematics that make them work — written by someone who builds them from scratch.",
+  "author": "Avishake Adhikary",
+  "authorUrl": "https://github.com/avishakeadhikary",
+  "siteUrl": "https://avishakeadhikary.github.io/blog",
+  "locale": "en-US",
+  "twitter": "@avishake",
+  "navLinks": [
+    { "label": "home", "href": "/" },
+    { "label": "posts", "href": "/posts" },
+    { "label": "tags", "href": "/tags" },
+    { "label": "about", "href": "/about" }
+  ],
+  "social": {
+    "github": "https://github.com/avishakeadhikary",
+    "rss": "/feed.xml"
+  }
+}

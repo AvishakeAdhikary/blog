@@ -1,0 +1,193 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import 'katex/dist/katex.min.css';
+@import '../styles/prose.css';
+
+:root,
+[data-theme='dark'] {
+  --bg: #0a0a0a;
+  --fg: #ffffff;
+  --muted: #9a9a9a;
+  --accent: #ff2d2d;
+  --accent-hover: #ff5252;
+  --border: #1f1f1f;
+  --code-bg: #111111;
+  color-scheme: dark;
+}
+
+[data-theme='light'] {
+  --bg: #ffffff;
+  --fg: #0a0a0a;
+  --muted: #555555;
+  --accent: #d6172a;
+  --accent-hover: #ff2d2d;
+  --border: #e5e5e5;
+  --code-bg: #f4f4f4;
+  color-scheme: light;
+}
+
+* {
+  border-color: var(--border);
+}
+
+html {
+  background: var(--bg);
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  min-height: 100vh;
+}
+
+::selection {
+  background: var(--accent);
+  color: #ffffff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.anim-underline {
+  position: relative;
+  display: inline-block;
+}
+.anim-underline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 180ms ease;
+}
+.anim-underline:hover::after {
+  transform: scaleX(1);
+}
+
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: var(--accent);
+  z-index: 60;
+  transition: width 80ms linear;
+}
+
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 8px;
+  background: var(--bg);
+  color: var(--fg);
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  z-index: 100;
+}
+.skip-link:focus {
+  top: 8px;
+}
+
+pre[data-theme='light'],
+pre[data-theme='light'] span {
+  color: var(--shiki-light) !important;
+  background-color: var(--shiki-light-bg) !important;
+}
+
+[data-theme='dark'] pre code [style*='--shiki-light'] {
+  color: var(--shiki-dark) !important;
+}
+
+code[data-theme*=' '],
+code[data-theme*=' '] span {
+  color: var(--shiki-dark);
+}
+
+[data-theme='light'] code[data-theme*=' '],
+[data-theme='light'] code[data-theme*=' '] span {
+  color: var(--shiki-light);
+}
+
+/* ── Aceternity-inspired animations ─────────────────────── */
+
+@keyframes spotlight {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) scale(0.7);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+}
+
+.animate-spotlight {
+  animation: spotlight 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+}
+
+@keyframes blink-caret {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.animate-blink-caret {
+  animation: blink-caret 1.1s step-start infinite;
+}
+
+/* Grid background light-mode override */
+[data-theme='light'] .grid-bg-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 40V0h40' stroke='%23e5e5e5' stroke-width='0.6'/%3E%3C/svg%3E");
+}
+
+/* ── Performance: CSS containment ────────────────────────── */
+article {
+  contain: layout style;
+}
+
+/* ── Scrollbar slim variant for code blocks ─────────────── */
+pre::-webkit-scrollbar {
+  height: 4px;
+}
+pre::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 2px;
+}

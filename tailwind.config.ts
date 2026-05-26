@@ -1,76 +1,75 @@
-import type { Config } from "tailwindcss";
+import type { Config } from 'tailwindcss';
+import typography from '@tailwindcss/typography';
 
 const config: Config = {
-    darkMode: ["class"],
-    content: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+  darkMode: ['selector', '[data-theme="dark"]'],
+  content: [
+    './src/app/**/*.{ts,tsx}',
+    './src/components/**/*.{ts,tsx}',
+    './src/lib/**/*.{ts,tsx}',
+    './content/**/*.md'
   ],
   theme: {
-  	extend: {
-  		colors: {
-  			background: 'hsl(var(--background))',
-  			foreground: 'hsl(var(--foreground))',
-  			card: {
-  				DEFAULT: 'hsl(var(--card))',
-  				foreground: 'hsl(var(--card-foreground))'
-  			},
-  			popover: {
-  				DEFAULT: 'hsl(var(--popover))',
-  				foreground: 'hsl(var(--popover-foreground))'
-  			},
-  			primary: {
-  				DEFAULT: 'hsl(var(--primary))',
-  				foreground: 'hsl(var(--primary-foreground))'
-  			},
-  			secondary: {
-  				DEFAULT: 'hsl(var(--secondary))',
-  				foreground: 'hsl(var(--secondary-foreground))'
-  			},
-  			muted: {
-  				DEFAULT: 'hsl(var(--muted))',
-  				foreground: 'hsl(var(--muted-foreground))'
-  			},
-  			accent: {
-  				DEFAULT: 'hsl(var(--accent))',
-  				foreground: 'hsl(var(--accent-foreground))'
-  			},
-  			destructive: {
-  				DEFAULT: 'hsl(var(--destructive))',
-  				foreground: 'hsl(var(--destructive-foreground))'
-  			},
-  			border: 'hsl(var(--border))',
-  			input: 'hsl(var(--input))',
-  			ring: 'hsl(var(--ring))',
-  			chart: {
-  				'1': 'hsl(var(--chart-1))',
-  				'2': 'hsl(var(--chart-2))',
-  				'3': 'hsl(var(--chart-3))',
-  				'4': 'hsl(var(--chart-4))',
-  				'5': 'hsl(var(--chart-5))'
-  			}
-  		},
-  		borderRadius: {
-  			lg: 'var(--radius)',
-  			md: 'calc(var(--radius) - 2px)',
-  			sm: 'calc(var(--radius) - 4px)'
-  		},
-		animation: {
-			"meteor-effect": "meteor 5s linear infinite",
-		},
-		keyframes: {
-			meteor: {
-				"0%": { transform: "rotate(215deg) translateX(0)", opacity: "1" },
-				"70%": { opacity: "1" },
-				"100%": {
-					transform: "rotate(215deg) translateX(-500px)",
-					opacity: "0",
-				},
-			},
-		},
-  	}
+    extend: {
+      fontFamily: {
+        mono: ['var(--font-mono)', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Consolas', 'monospace']
+      },
+      colors: {
+        bg: 'var(--bg)',
+        fg: 'var(--fg)',
+        muted: 'var(--muted)',
+        accent: 'var(--accent)',
+        'accent-hover': 'var(--accent-hover)',
+        border: 'var(--border)',
+        'code-bg': 'var(--code-bg)'
+      },
+      typography: () => ({
+        DEFAULT: {
+          css: {
+            '--tw-prose-body': 'var(--fg)',
+            '--tw-prose-headings': 'var(--fg)',
+            '--tw-prose-lead': 'var(--muted)',
+            '--tw-prose-links': 'var(--accent)',
+            '--tw-prose-bold': 'var(--fg)',
+            '--tw-prose-counters': 'var(--muted)',
+            '--tw-prose-bullets': 'var(--muted)',
+            '--tw-prose-hr': 'var(--border)',
+            '--tw-prose-quotes': 'var(--fg)',
+            '--tw-prose-quote-borders': 'var(--accent)',
+            '--tw-prose-captions': 'var(--muted)',
+            '--tw-prose-kbd': 'var(--fg)',
+            '--tw-prose-kbd-shadows': 'var(--border)',
+            '--tw-prose-code': 'var(--fg)',
+            '--tw-prose-pre-code': 'var(--fg)',
+            '--tw-prose-pre-bg': 'var(--code-bg)',
+            '--tw-prose-th-borders': 'var(--border)',
+            '--tw-prose-td-borders': 'var(--border)',
+            '--tw-prose-invert-body': 'var(--fg)',
+            '--tw-prose-invert-headings': 'var(--fg)',
+            '--tw-prose-invert-lead': 'var(--muted)',
+            '--tw-prose-invert-links': 'var(--accent)',
+            '--tw-prose-invert-bold': 'var(--fg)',
+            '--tw-prose-invert-counters': 'var(--muted)',
+            '--tw-prose-invert-bullets': 'var(--muted)',
+            '--tw-prose-invert-hr': 'var(--border)',
+            '--tw-prose-invert-quotes': 'var(--fg)',
+            '--tw-prose-invert-quote-borders': 'var(--accent)',
+            '--tw-prose-invert-captions': 'var(--muted)',
+            '--tw-prose-invert-kbd': 'var(--fg)',
+            '--tw-prose-invert-kbd-shadows': 'var(--border)',
+            '--tw-prose-invert-code': 'var(--fg)',
+            '--tw-prose-invert-pre-code': 'var(--fg)',
+            '--tw-prose-invert-pre-bg': 'var(--code-bg)',
+            '--tw-prose-invert-th-borders': 'var(--border)',
+            '--tw-prose-invert-td-borders': 'var(--border)',
+            fontFamily: 'var(--font-mono)',
+            maxWidth: 'none'
+          }
+        }
+      })
+    }
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [typography]
 };
+
 export default config;

@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60" width="200" height="60">
+  <rect width="200" height="60" fill="#0a0a0a"/>
+  <text x="16" y="42" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="32" font-weight="700" fill="#ffffff">mono<tspan fill="#ff2d2d">log</tspan></text>
+</svg>
