@@ -22,7 +22,6 @@ const nextConfig = {
   compress: true,
   images: { unoptimized: true },
   pageExtensions,
-  eslint: { ignoreDuringBuilds: false },
   typescript: { ignoreBuildErrors: false },
   // Cache static assets for 1 year in dev server (export handles this via host)
   ...(isProd

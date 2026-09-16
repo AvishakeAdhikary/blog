@@ -1,9 +1,8 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+@config '../../tailwind.config.ts';
 
-@import 'katex/dist/katex.min.css';
-@import '../styles/prose.css';
+@import 'katex/dist/katex.min.css' layer(utilities);
+@import '../styles/prose.css' layer(utilities);
 
 :root,
 [data-theme='dark'] {

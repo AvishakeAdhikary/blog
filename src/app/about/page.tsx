@@ -5,6 +5,7 @@ import { ABOUT_FILE } from '@/lib/paths';
 import { renderMarkdown } from '@/lib/markdown';
 import { Container } from '@/components/Container';
 import { MarkdownContent } from '@/components/MarkdownContent';
+import { TTSControls } from '@/components/TTSControls';
 
 export const metadata: Metadata = {
   title: 'about',
@@ -21,11 +22,12 @@ export default async function AboutPage() {
   return (
     <Container size="md">
       <article className="py-10">
-        <header className="mb-8 border-b border-border pb-6">
-          <h1 className="text-3xl sm:text-4xl font-bold">{title}</h1>
-          {updated && <p className="text-muted text-xs mt-2">updated {updated}</p>}
+        <header className="border-border mb-8 border-b pb-6">
+          <h1 className="text-3xl font-bold sm:text-4xl">{title}</h1>
+          {updated && <p className="text-muted mt-2 text-xs">updated {updated}</p>}
         </header>
         <MarkdownContent html={html} />
+        <TTSControls />
       </article>
     </Container>
   );

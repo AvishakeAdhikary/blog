@@ -12,6 +12,8 @@ import rehypePrettyCode from 'rehype-pretty-code';
 import rehypeStringify from 'rehype-stringify';
 import { visit } from 'unist-util-visit';
 import { basePath } from './site';
+import { remarkMermaid } from './remark-mermaid';
+import { rehypeVideoEmbed } from './rehype-video-embed';
 import type { TocEntry } from './types';
 
 interface RenderOptions {
@@ -28,21 +30,39 @@ function rewriteAssetPaths(raw: string, slug?: string): string {
 
 function tocExtractor(toc: TocEntry[]) {
   return () => (tree: unknown) => {
-    visit(tree as never, 'element', (node: { tagName?: string; properties?: { id?: string }; children?: Array<{ type: string; value?: string; children?: Array<{ type: string; value?: string }> }> }) => {
-      if (!node.tagName) return;
-      const match = /^h([1-6])$/.exec(node.tagName);
-      if (!match) return;
-      const depth = Number(match[1]);
-      if (depth < 2 || depth > 4) return;
-      const id = node.properties?.id;
-      if (!id) return;
-      const text = extractText(node);
-      toc.push({ id, text, depth });
-    });
+    visit(
+      tree as never,
+      'element',
+      (node: {
+        tagName?: string;
+        properties?: { id?: string };
+        children?: Array<{
+          type: string;
+          value?: string;
+          children?: Array<{ type: string; value?: string }>;
+        }>;
+      }) => {
+        if (!node.tagName) return;
+        const match = /^h([1-6])$/.exec(node.tagName);
+        if (!match) return;
+        const depth = Number(match[1]);
+        if (depth < 2 || depth > 4) return;
+        const id = node.properties?.id;
+        if (!id) return;
+        const text = extractText(node);
+        toc.push({ id, text, depth });
+      }
+    );
   };
 }
 
-function extractText(node: { children?: Array<{ type: string; value?: string; children?: Array<{ type: string; value?: string }> }> }): string {
+function extractText(node: {
+  children?: Array<{
+    type: string;
+    value?: string;
+    children?: Array<{ type: string; value?: string }>;
+  }>;
+}): string {
   if (!node.children) return '';
   let out = '';
   for (const child of node.children) {
@@ -63,8 +83,10 @@ export async function renderMarkdown(
     .use(remarkParse)
     .use(remarkGfm)
     .use(remarkMath)
+    .use(remarkMermaid)
     .use(remarkRehype, { allowDangerousHtml: true })
     .use(rehypeRaw)
+    .use(rehypeVideoEmbed)
     .use(rehypeSlug)
     .use(rehypeAutolinkHeadings, {
       behavior: 'wrap',

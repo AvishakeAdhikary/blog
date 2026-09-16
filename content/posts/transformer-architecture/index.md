@@ -1,11 +1,11 @@
 ---
-title: "Attention from Scratch: Building the Transformer Step by Step"
-date: "2026-03-18"
-description: "A ground-up implementation of the transformer — self-attention, multi-head attention, positional encoding, and the full encoder stack — with derivations at each step."
-tags: ["transformers", "attention", "machine-learning", "architecture", "deep-dive"]
-cover: "./assets/cover.svg"
+title: 'Attention from Scratch: Building the Transformer Step by Step'
+date: '2026-03-18'
+description: 'A ground-up implementation of the transformer — self-attention, multi-head attention, positional encoding, and the full encoder stack — with derivations at each step.'
+tags: ['transformers', 'attention', 'machine-learning', 'architecture', 'deep-dive']
+cover: './assets/cover.svg'
 draft: false
-author: "Avishake Adhikary"
+author: 'Avishake Adhikary'
 ---
 
 ![cover](./assets/cover.svg)
@@ -130,6 +130,19 @@ Modern LLMs typically use **Rotary Position Embedding (RoPE)** instead, which en
 ## The encoder block
 
 An encoder block: multi-head self-attention → residual + norm → feed-forward → residual + norm.
+
+```mermaid
+flowchart TD
+    X["input x"] --> N1["LayerNorm"]
+    N1 --> MHA["Multi-Head Attention"]
+    X --> A1(("+"))
+    MHA --> A1
+    A1 --> N2["LayerNorm"]
+    N2 --> FF["Feed-Forward (GELU)"]
+    A1 --> A2(("+"))
+    FF --> A2
+    A2 --> OUT["output"]
+```
 
 ```python
 class TransformerEncoderBlock(nn.Module):
