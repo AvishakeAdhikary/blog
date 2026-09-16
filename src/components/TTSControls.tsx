@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useReducer, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
 import { getTTSController, TTS_INTRO_ID } from '@/lib/tts-controller';
@@ -45,7 +46,7 @@ export function TTSControls({ contentId = 'post-content' }: { contentId?: string
       : 'pause reading';
   const playPauseIcon = !controller.isPlaying ? '▶' : controller.isPaused ? '▶' : '⏸';
 
-  return (
+  return createPortal(
     <div className="tts-toolbar" role="region" aria-label="text to speech controls">
       <button
         type="button"
@@ -124,6 +125,7 @@ export function TTSControls({ contentId = 'post-content' }: { contentId?: string
       <span className="tts-now-playing" aria-live="polite">
         {current?.title || ''}
       </span>
-    </div>
+    </div>,
+    document.body
   );
 }

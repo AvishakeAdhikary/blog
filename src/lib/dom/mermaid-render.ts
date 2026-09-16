@@ -107,14 +107,27 @@ function buildChrome(root: HTMLElement): Chrome {
     sourceBtn.setAttribute('aria-pressed', String(chrome.showingSource));
     sourceBtn.classList.toggle('active', chrome.showingSource);
   });
-  fullscreenBtn.addEventListener('click', () => {
-    const isFullscreen = root.classList.toggle('mermaid-diagram--fullscreen');
+  // Uses the native Fullscreen API (not a CSS `position: fixed` overlay): the
+  // `<article>` ancestor sets `contain: layout` for perf, which makes itself
+  // the containing block for any `position: fixed` descendant instead of the
+  // viewport. requestFullscreen() renders in the browser's top layer, so it
+  // is unaffected by that (or by any other ancestor stacking/containment).
+  const syncFullscreenUI = () => {
+    const isFullscreen = document.fullscreenElement === root;
     fullscreenBtn.textContent = isFullscreen ? '✕' : '⛶';
     fullscreenBtn.setAttribute(
       'aria-label',
       isFullscreen ? 'exit fullscreen' : 'toggle fullscreen'
     );
+  };
+  fullscreenBtn.addEventListener('click', () => {
+    if (document.fullscreenElement === root) {
+      void document.exitFullscreen();
+    } else {
+      void root.requestFullscreen?.();
+    }
   });
+  root.addEventListener('fullscreenchange', syncFullscreenUI);
 
   return chrome;
 }
@@ -183,5 +196,8 @@ export function enhanceMermaidDiagrams(root: HTMLElement): () => void {
   return () => {
     disposed = true;
     observer?.disconnect();
+    for (const chrome of chromes) {
+      if (document.fullscreenElement === chrome.root) void document.exitFullscreen();
+    }
   };
 }
