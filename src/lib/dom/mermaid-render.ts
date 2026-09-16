@@ -2,12 +2,15 @@ let seq = 0;
 
 interface Chrome {
   root: HTMLElement;
+  viewport: HTMLElement;
   canvas: HTMLElement;
   fallback: HTMLElement;
   zoomLabel: HTMLElement;
   fullscreenBtn: HTMLButtonElement;
   sourceBtn: HTMLButtonElement;
   scale: number;
+  panX: number;
+  panY: number;
   showingSource: boolean;
 }
 
@@ -19,8 +22,8 @@ function currentMermaidTheme(): 'dark' | 'default' {
   return document.documentElement.dataset.theme === 'light' ? 'default' : 'dark';
 }
 
-function applyScale(chrome: Chrome) {
-  chrome.canvas.style.transform = `scale(${chrome.scale})`;
+function applyTransform(chrome: Chrome) {
+  chrome.canvas.style.transform = `translate(${chrome.panX}px, ${chrome.panY}px) scale(${chrome.scale})`;
   chrome.zoomLabel.textContent = `${Math.round(chrome.scale * 100)}%`;
 }
 
@@ -46,11 +49,11 @@ function buildChrome(root: HTMLElement): Chrome {
   zoomIn.textContent = '+';
   zoomIn.setAttribute('aria-label', 'zoom in');
 
-  const reset = document.createElement('button');
-  reset.type = 'button';
-  reset.className = 'mermaid-toolbar-btn';
-  reset.textContent = 'reset';
-  reset.setAttribute('aria-label', 'reset zoom');
+  const recenter = document.createElement('button');
+  recenter.type = 'button';
+  recenter.className = 'mermaid-toolbar-btn';
+  recenter.textContent = 'recenter';
+  recenter.setAttribute('aria-label', 'recenter and reset zoom');
 
   const sourceBtn = document.createElement('button');
   sourceBtn.type = 'button';
@@ -65,7 +68,7 @@ function buildChrome(root: HTMLElement): Chrome {
   fullscreenBtn.textContent = '⛶';
   fullscreenBtn.setAttribute('aria-label', 'toggle fullscreen');
 
-  toolbar.append(zoomOut, zoomLabel, zoomIn, reset, sourceBtn, fullscreenBtn);
+  toolbar.append(zoomOut, zoomLabel, zoomIn, recenter, sourceBtn, fullscreenBtn);
 
   const viewport = document.createElement('div');
   viewport.className = 'mermaid-viewport';
@@ -79,26 +82,31 @@ function buildChrome(root: HTMLElement): Chrome {
 
   const chrome: Chrome = {
     root,
+    viewport,
     canvas,
     fallback,
     zoomLabel,
     fullscreenBtn,
     sourceBtn,
     scale: 1,
+    panX: 0,
+    panY: 0,
     showingSource: false
   };
 
   zoomOut.addEventListener('click', () => {
     chrome.scale = Math.max(MIN_SCALE, chrome.scale - SCALE_STEP);
-    applyScale(chrome);
+    applyTransform(chrome);
   });
   zoomIn.addEventListener('click', () => {
     chrome.scale = Math.min(MAX_SCALE, chrome.scale + SCALE_STEP);
-    applyScale(chrome);
+    applyTransform(chrome);
   });
-  reset.addEventListener('click', () => {
+  recenter.addEventListener('click', () => {
     chrome.scale = 1;
-    applyScale(chrome);
+    chrome.panX = 0;
+    chrome.panY = 0;
+    applyTransform(chrome);
   });
   sourceBtn.addEventListener('click', () => {
     chrome.showingSource = !chrome.showingSource;
@@ -129,13 +137,46 @@ function buildChrome(root: HTMLElement): Chrome {
   });
   root.addEventListener('fullscreenchange', syncFullscreenUI);
 
+  // Click-and-drag panning. Uses pointer capture so the drag keeps tracking
+  // even if the pointer leaves the viewport bounds mid-gesture.
+  let dragPointerId: number | null = null;
+  let dragStartX = 0;
+  let dragStartY = 0;
+  let panStartX = 0;
+  let panStartY = 0;
+
+  viewport.addEventListener('pointerdown', (event) => {
+    if (chrome.showingSource || event.button !== 0) return;
+    dragPointerId = event.pointerId;
+    dragStartX = event.clientX;
+    dragStartY = event.clientY;
+    panStartX = chrome.panX;
+    panStartY = chrome.panY;
+    viewport.setPointerCapture(event.pointerId);
+    viewport.classList.add('dragging');
+  });
+  viewport.addEventListener('pointermove', (event) => {
+    if (dragPointerId !== event.pointerId) return;
+    chrome.panX = panStartX + (event.clientX - dragStartX);
+    chrome.panY = panStartY + (event.clientY - dragStartY);
+    applyTransform(chrome);
+  });
+  const endDrag = (event: PointerEvent) => {
+    if (dragPointerId !== event.pointerId) return;
+    dragPointerId = null;
+    viewport.classList.remove('dragging');
+  };
+  viewport.addEventListener('pointerup', endDrag);
+  viewport.addEventListener('pointercancel', endDrag);
+
   return chrome;
 }
 
 /**
  * Renders every `div.mermaid-diagram[data-mermaid-source]` under `root` into
- * an SVG diagram with a GitHub-style toolbar (zoom, fullscreen, view source),
- * and keeps re-rendering on theme toggles. Returns a cleanup function.
+ * an SVG diagram with a GitHub-style toolbar (zoom, drag-to-pan, recenter,
+ * fullscreen, view source), and keeps re-rendering on theme toggles. Returns
+ * a cleanup function.
  */
 export function enhanceMermaidDiagrams(root: HTMLElement): () => void {
   const diagrams = Array.from(

@@ -133,14 +133,16 @@ An encoder block: multi-head self-attention → residual + norm → feed-forward
 
 ```mermaid
 flowchart TD
-    X["input x"] --> N1["LayerNorm"]
+    X["x"] --> N1["LayerNorm"]
     N1 --> MHA["Multi-Head Attention"]
+    MHA --> D1["Dropout"]
     X --> A1(("+"))
-    MHA --> A1
+    D1 --> A1
     A1 --> N2["LayerNorm"]
     N2 --> FF["Feed-Forward (GELU)"]
+    FF --> D2["Dropout"]
     A1 --> A2(("+"))
-    FF --> A2
+    D2 --> A2
     A2 --> OUT["output"]
 ```
 

@@ -244,6 +244,7 @@
   border-radius: 999px;
   width: 2rem;
   height: 2rem;
+  flex: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -253,6 +254,15 @@
     color 120ms ease,
     border-color 120ms ease;
   white-space: nowrap;
+}
+
+/* The "sections ▾" trigger holds text, not a single icon glyph — it needs to
+   size to its content instead of being squashed into the 2rem icon square
+   (which pushed its label into neighboring controls). */
+.tts-jump > .tts-toolbar-btn {
+  width: auto;
+  height: 2rem;
+  padding: 0 0.65rem;
 }
 
 .tts-toolbar-btn:hover:not(:disabled) {
@@ -268,6 +278,7 @@
 
 .tts-jump {
   position: relative;
+  flex: none;
 }
 
 .tts-jump-menu {
@@ -317,6 +328,8 @@
   color: var(--muted);
   font-size: 0.75rem;
   padding: 0 0.4rem 0 0.2rem;
+  flex: 1 1 auto;
+  min-width: 0;
   max-width: 12rem;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -409,15 +422,26 @@
 }
 
 .mermaid-viewport {
-  overflow: auto;
+  overflow: hidden;
   padding: 1.25rem;
   text-align: center;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.mermaid-viewport.dragging {
+  cursor: grabbing;
 }
 
 .mermaid-canvas {
   display: inline-block;
   transform-origin: top center;
   transition: transform 150ms ease;
+}
+
+.mermaid-viewport.dragging .mermaid-canvas {
+  transition: none;
 }
 
 .mermaid-canvas svg {
